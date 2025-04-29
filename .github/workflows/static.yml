@@ -2,11 +2,8 @@
 name: Deploy static content to Pages
 
 on:
-  # Runs on pushes targeting the default branch
   push:
     branches: ["main"]
-
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 permissions:
@@ -24,6 +21,7 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -31,13 +29,15 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      # Upload the GitHub Pages artifact — ONLY ONCE
+      # Upload artifact with a unique name
       - name: Upload GitHub Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './'  # Upload your site contents
+          path: './'  # or ./dist, ./build, depending on your project
+          name: 'github-pages-artifact'  # Unique name to avoid conflict
 
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
 
